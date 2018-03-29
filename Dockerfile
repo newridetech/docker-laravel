@@ -10,6 +10,7 @@ WORKDIR /tmp/docker-php-nginx
 
 RUN DEBIAN_FRONTEND=noninteractive ansible-playbook -i "localhost," -c local playbook.yml && \
     DEBIAN_FRONTEND=noninteractive apt-get -y remove ansible && \
-    rm -rf /tmp/docker-php-nginx
+    rm -rf /tmp/docker-php-nginx \
+    DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
 
 EXPOSE 443 80
