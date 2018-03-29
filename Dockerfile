@@ -11,6 +11,7 @@ WORKDIR /tmp/docker-php-nginx
 
 RUN DEBIAN_FRONTEND=noninteractive ansible-galaxy install -r requirements.yml && \
     DEBIAN_FRONTEND=noninteractive ansible-playbook -i "localhost," -c local playbook.yml && \
-    DEBIAN_FRONTEND=noninteractive apt-get y remove ansible
+    DEBIAN_FRONTEND=noninteractive apt-get y remove ansible && \
+    rm -rf /tmp/docker-php-nginx
 
 EXPOSE 443 80
