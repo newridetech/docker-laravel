@@ -1,0 +1,55 @@
+- hosts: all
+
+  roles:
+
+    - { role: geerlingguy.mysql }
+    - { role: geerlingguy.nginx }
+
+  post_tasks:
+
+    # get rid of apache and install nginx
+
+    - name: remove apache2
+      apt:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - apache2
+        - apache2-bin
+        - apache2-data
+        - apache2-utils
+
+    - name: remove apache lefovers
+      file:
+        path: /var/www/html
+        state: absent
+
+    - name: remove nginx default host
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: raise php upload and post limits
+      ini_file:
+        path: /etc/php/7.2/fpm/php.ini
+        section: PHP
+        option: "{{ item }}"
+        value: 100M
+      with_items:
+        - post_max_size
+        - upload_max_filesize
+
+    - service:
+        name: php7.2-fpm
+        state: restarted
+
+    - template:
+        src: default.conf
+        dest: /etc/nginx/sites-enabled/default.conf
+        owner: root
+        group: root
+        mode: 0744
+
+    - service:
+        name: nginx
+        state: restarted
