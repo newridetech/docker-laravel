@@ -3,8 +3,7 @@ FROM newridetech/php:7.2-fpm
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ansible && \
     mkdir /tmp/docker-php-nginx
 
-COPY playbook.yml /tmp/docker-php-nginx/playbook.yml
-COPY requirements.yml /tmp/docker-php-nginx/requirements.yml
+COPY ansible /tmp/docker-php-nginx
 COPY etc/nginx/sites-enabled/default.conf /tmp/docker-php-nginx/default.conf
 
 WORKDIR /tmp/docker-php-nginx
