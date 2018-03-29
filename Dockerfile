@@ -10,6 +10,7 @@ COPY etc/nginx/sites-enabled/default.conf /tmp/docker-php-nginx/default.conf
 WORKDIR /tmp/docker-php-nginx
 
 RUN DEBIAN_FRONTEND=noninteractive ansible-galaxy install -r requirements.yml && \
-    DEBIAN_FRONTEND=noninteractive ansible-playbook -i "localhost," -c local playbook.yml
+    DEBIAN_FRONTEND=noninteractive ansible-playbook -i "localhost," -c local playbook.yml && \
+    DEBIAN_FRONTEND=noninteractive apt-get y remove ansible
 
 EXPOSE 443 80
