@@ -2,8 +2,11 @@
 
   roles:
 
-    - { role: geerlingguy.mysql }
     - { role: geerlingguy.nginx }
+
+  pre_tasks:
+    - name: Generate self-signed SSL cert
+      command: openssl req -x509 -newkey rsa:4096 -keyout /root/ssl.key -out /root/ssl.crt -days 365 -subj '/C=PL/ST=MAZOVIAN/L=Warsaw/O=Newride.Tech/OU=Newride.Tech/CN=newride.construction' -nodes
 
   post_tasks:
 
