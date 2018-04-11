@@ -100,6 +100,14 @@ else
   echoerr wait-for-db: timeout out after 15 seconds waiting for ${DB_HOST_NAME}:${DB_PORT}
 fi
 
+SSL_DOMAIN=${SSL_DOMAIN:-newride.construction}
+SSL_REGION=${SSL_REGION:-MAZOVIAN}
+SSL_CITY=${SSL_CITY:-Warsaw}
+SSL_ORG=${SSL_ORG:-Newride.Tech}
+if [[ $SSL_DOMAIN ]]; then
+    openssl req -x509 -newkey rsa:4096 -keyout /root/ssl.key -out /root/ssl.crt -days 365 -subj "/C=PL/ST=${SSL_REGION}/L=${SSL_CITY}/O=${SSL_ORG}/OU=${SSL_ORG}/CN=${SSL_DOMAIN}" -nodes
+fi
+
 composer install
 
 php artisan key:generate --no-interaction --force
